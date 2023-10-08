@@ -1,11 +1,12 @@
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
+import Subheading from "./Subheading";
 import RepositoryList from "./RepositoryList";
 import {styles} from "../styles";
 
 const Main = () => {
     return (
         <View style={styles.container}>
-            <Text>Rate Repository Application</Text>
+            <Subheading>Rate Repository Application</Subheading>
             <RepositoryList />
         </View>
     );
