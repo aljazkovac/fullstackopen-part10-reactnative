@@ -1,11 +1,8 @@
-import {View, StyleSheet, Pressable, Text} from 'react-native';
-//import Constants from 'expo-constants';
+import {View, StyleSheet, Text} from 'react-native';
+import {Link} from "react-router-native";
 
 const styles = StyleSheet.create({
     tab: {
-        display: "flex",
-        // paddingTop: Constants.statusBarHeight,
-        // ...
     },
     content: {
         color: "#ffffff",
@@ -18,9 +15,9 @@ const AppBarTab = ({ content }) => {
     console.log("Content: ", content);
     return (
         <View style={styles.tab}>
-            <Pressable onPress={() => alert(`Hello ${content}`)}>
+            <Link to={`/${content}`}>
                 <Text style={styles.content}>{content}</Text>
-            </Pressable>
+            </Link>
         </View>
     );
 };
