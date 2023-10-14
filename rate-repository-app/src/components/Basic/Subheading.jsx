@@ -3,7 +3,7 @@
 // *** IMPORTS ***
 import { StyleSheet } from 'react-native';
 import Text from "./Text";
-import theme from '../theme';
+import theme from '../../theme';
 
 // *** STYLES ***
 const styles = StyleSheet.create({

@@ -18,7 +18,7 @@ const AppBarTab = ({ content }) => {
     console.log("Content: ", content);
     return (
         <View style={styles.tab}>
-            <Pressable onPress={() => alert("Hello")}>
+            <Pressable onPress={() => alert(`Hello ${content}`)}>
                 <Text style={styles.content}>{content}</Text>
             </Pressable>
         </View>

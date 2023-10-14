@@ -5,6 +5,9 @@ import AppBarTab from "./AppBarTab";
 const styles = StyleSheet.create({
     container: {
         paddingTop: Constants.statusBarHeight,
+        paddingBottom: Constants.statusBarHeight,
+        paddingLeft: 10,
+        paddingRight: 10,
         backgroundColor: "#24292e",
         // ...
     },
