@@ -11,10 +11,9 @@ const styles = StyleSheet.create({
     // ...
 });
 
-const AppBarTab = ({ content }) => {
-    console.log("Content: ", content);
+const AppBarTab = ({ content, style }) => {
     return (
-        <View style={styles.tab}>
+        <View style={[styles.tab, style]}>
             <Link to={`/${content}`}>
                 <Text style={styles.content}>{content}</Text>
             </Link>
