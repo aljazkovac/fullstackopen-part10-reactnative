@@ -1,3 +1,9 @@
+/***
+ * This is a component for the SignIn form.
+ * The Formik component is used to manage the state of the form.
+ * The Formik component takes an onSubmit prop that is used to define the function that is called when the form is submitted.
+***/
+
 import { View, Pressable, StyleSheet } from "react-native";
 import { Formik } from "formik";
 import Text from "./Basic/Text";
