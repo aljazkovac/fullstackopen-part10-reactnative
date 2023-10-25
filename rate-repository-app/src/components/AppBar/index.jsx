@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const AppBar = () => {
+const Index = () => {
     return (
         <View style={styles.container}>
             <ScrollView horizontal showsHorizontalScrollIndicator={true}>
@@ -26,4 +26,4 @@ const AppBar = () => {
     );
 };
 
-export default AppBar;
+export default Index;
