@@ -9,12 +9,7 @@ import * as yup from "yup";
 import { Formik } from "formik";
 import Text from "./Basic/Text";
 import FormikTextInput from "./Basic/FormikTextInput";
-
-
-const onSubmit = (values, formikHelpers) => {
-    console.log(values);
-    formikHelpers.resetForm();
-};
+import useSignIn from "../hooks/useSignIn";
 
 const styles = StyleSheet.create({
     form: {
@@ -54,6 +49,7 @@ const validationSchema = yup.object().shape({
         .required('Password is required'),
 });
 
+
 const SignInForm = ({handleSubmit, errors}) => {
     const usernameError = errors.username;
     const passwordError = errors.password;
@@ -77,6 +73,20 @@ const SignInForm = ({handleSubmit, errors}) => {
 };
 
 const SignIn = () => {
+    const [signIn] = useSignIn();
+    const onSubmit = async (values, formikHelpers) => {
+        console.log(values);
+        const { username, password } = values;
+        try {
+            const {data} = await signIn({username, password});
+            if(data && data.authenticate) {
+                console.log("Data:", data);
+            }
+        } catch (e) {
+            console.log("Error:", e);
+        }
+        formikHelpers.resetForm();
+    };
     return (
         <Formik
             initialValues={{
