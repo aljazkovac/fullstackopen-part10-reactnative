@@ -10,6 +10,7 @@ import { Formik } from "formik";
 import Text from "./Basic/Text";
 import FormikTextInput from "./Basic/FormikTextInput";
 import useSignIn from "../hooks/useSignIn";
+import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
     form: {
@@ -74,6 +75,7 @@ const SignInForm = ({handleSubmit, errors}) => {
 
 const SignIn = () => {
     const [signIn] = useSignIn();
+    const navigate = useNavigate();
     const onSubmit = async (values, formikHelpers) => {
         console.log(values);
         const { username, password } = values;
@@ -81,6 +83,7 @@ const SignIn = () => {
             const {data} = await signIn({username, password});
             if(data && data.authenticate) {
                 console.log("Data:", data);
+                navigate("/");
             }
         } catch (e) {
             console.log("Error:", e);
