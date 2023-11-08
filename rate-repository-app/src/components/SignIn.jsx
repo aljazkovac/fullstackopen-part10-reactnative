@@ -9,8 +9,6 @@ import * as yup from "yup";
 import { Formik } from "formik";
 import Text from "./Basic/Text";
 import FormikTextInput from "./Basic/FormikTextInput";
-import useSignIn from "../hooks/useSignIn";
-import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
     form: {
@@ -56,11 +54,11 @@ const SignInForm = ({handleSubmit, errors}) => {
     const passwordError = errors.password;
     return (
         <View style={styles.form}>
-            <FormikTextInput name="username" placeholder="username"
+            <FormikTextInput testID="usernameField" name="username" placeholder="username"
                              style={usernameError ? styles.inputFieldError : styles.inputField} />
-            <FormikTextInput name="password" placeholder="password" secureTextEntry
+            <FormikTextInput testID="passwordField" name="password" placeholder="password" secureTextEntry
                              style={passwordError ? styles.inputFieldError : styles.inputField} />
-            <Pressable onPress={handleSubmit} style={({pressed}) => [
+            <Pressable testID="submitButton" onPress={handleSubmit} style={({pressed}) => [
                 {
                 backgroundColor: pressed ? "black" : "#0366d6",
                 },
@@ -73,23 +71,7 @@ const SignInForm = ({handleSubmit, errors}) => {
     );
 };
 
-const SignIn = () => {
-    const [signIn] = useSignIn();
-    const navigate = useNavigate();
-    const onSubmit = async (values, formikHelpers) => {
-        console.log(values);
-        const { username, password } = values;
-        try {
-            const {data} = await signIn({username, password});
-            if(data && data.authenticate) {
-                console.log("Data:", data);
-                navigate("/");
-            }
-        } catch (e) {
-            console.log("Error:", e);
-        }
-        formikHelpers.resetForm();
-    };
+const SignIn = ({ onSubmit }) => {
     return (
         <Formik
             initialValues={{

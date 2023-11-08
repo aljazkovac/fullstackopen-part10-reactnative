@@ -51,7 +51,7 @@ describe('RepositoryList', () => {
             const repositoryItems = screen.getAllByTestId('repositoryItem');
             const [firstRepositoryItem, secondRepositoryItem] = repositoryItems;
 
-            screen.debug();
+            // screen.debug();
 
             expect(firstRepositoryItem).toHaveTextContent('jaredpalmer/formik');
             expect(firstRepositoryItem).toHaveTextContent('Build forms in React, without the tears');
