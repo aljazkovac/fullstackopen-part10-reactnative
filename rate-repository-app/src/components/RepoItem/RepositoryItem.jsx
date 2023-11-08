@@ -9,13 +9,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
     },
 });
-const Index = ({ ownerAvatarUrl, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount }) => {
+const RepositoryItem = ({ ownerAvatarUrl, fullName, description, language, forksCount, stargazersCount, ratingAverage, reviewCount }) => {
     return(
-        <View style={styles.repoItem}>
+        <View testID="repositoryItem" style={styles.repoItem}>
             <RepositoryHeader avatarUrl={ownerAvatarUrl} fullName={fullName} language={language} description={description} />
             <RepositoryHeaderDetails forksCount={forksCount} stargazersCount={stargazersCount} ratingAverage={ratingAverage} reviewCount={reviewCount} />
         </View>
         )
 }
 
-export default Index;
+export default RepositoryItem;

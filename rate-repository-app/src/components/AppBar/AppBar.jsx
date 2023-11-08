@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const Index = () => {
+const AppBar = () => {
     const { data } = useQuery(GET_USER);
     const [signOut] = useUser();
     console.log("data: ", data);
@@ -38,4 +38,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default AppBar;
