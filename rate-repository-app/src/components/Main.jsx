@@ -4,6 +4,7 @@ import AppBar from "./AppBar/AppBar";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import useSignIn from "../hooks/useSignIn";
+import RepositoryItem from "./RepoItem/RepositoryItem";
 
 const styles = StyleSheet.create({
     main: {
@@ -35,6 +36,7 @@ const Main = () => {
             <Routes>
                 <Route path="/" element={<RepositoryList />} />
                 <Route path="/signin" element={<SignIn onSubmit={onSubmit} />} />
+                <Route path="/:id" element={<RepositoryItem singleView={true} />} />
                 <Route path={"*"} element={<Navigate to="/" replace />} />
             </Routes>
         </View>
