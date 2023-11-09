@@ -22,9 +22,13 @@ const AppBarTab = ({ content, style, onPress }) => {
 
     return (
         <View style={[styles.tab, style]}>
-            <Link to={`/${content}`}>
+            { content.toLowerCase() === "repositories"
+                ? <Link to="/">
+                    <Text style={styles.content}>{content}</Text>
+                </Link>
+                : <Link to={`/${content}`}>
                 <Text style={styles.content}>{content}</Text>
-            </Link>
+            </Link> }
         </View>
     );
 };
