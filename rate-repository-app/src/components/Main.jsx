@@ -4,7 +4,7 @@ import AppBar from "./AppBar/AppBar";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import useSignIn from "../hooks/useSignIn";
-import RepositoryItem from "./RepoItem/RepositoryItem";
+import RepositoryItemWithReviews from "./RepoItem/RepositoryItemWithReviews";
 
 const styles = StyleSheet.create({
     main: {
@@ -22,7 +22,6 @@ const Main = () => {
         try {
             const {data} = await signIn({username, password});
             if(data && data.authenticate) {
-                console.log("Data:", data);
                 navigate("/");
             }
         } catch (e) {
@@ -36,7 +35,7 @@ const Main = () => {
             <Routes>
                 <Route path="/" element={<RepositoryList />} />
                 <Route path="/signin" element={<SignIn onSubmit={onSubmit} />} />
-                <Route path="/:id" element={<RepositoryItem singleView={true} />} />
+                <Route path="/:id" element={<RepositoryItemWithReviews />} />
                 <Route path={"*"} element={<Navigate to="/" replace />} />
             </Routes>
         </View>

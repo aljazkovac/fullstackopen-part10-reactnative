@@ -48,6 +48,15 @@ export const GET_REPOSITORY = gql`
             language
             ownerAvatarUrl
             url
+        }
+    }
+`;
+
+export const GET_REVIEWS = gql`
+    query($id: ID!) {
+        repository(id: $id) {
+            id
+            fullName
             reviews {
                 edges {
                     node {

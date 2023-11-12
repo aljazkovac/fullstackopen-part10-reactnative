@@ -2,8 +2,8 @@ import {Button, Linking, Text, StyleSheet, View} from "react-native";
 import RepositoryHeader from "./RepositoryHeader";
 import RepositoryHeaderDetails from "./RepositoryHeaderDetails";
 import {useParams} from "react-router-native";
-import {useQuery} from "@apollo/client";
-import {GET_REPOSITORY} from "../../graphql/queries";
+import useRepositories from "../../hooks/useRepositories";
+import {useEffect, useState} from "react";
 
 const styles = StyleSheet.create({
     repoItem: {
@@ -14,12 +14,19 @@ const styles = StyleSheet.create({
 });
 const RepositoryItem = ({ singleView, ...props }) => {
     const { id } = singleView ? useParams() : props;
-    console.log("ID:", id)
-    const { data, loading, error } = singleView
-            ? useQuery(GET_REPOSITORY, {
-                        variables: { id },
-                        fetchPolicy: "cache-and-network" })
-            : {};
+    const [repository, setRepository] = useState(null);
+    const { loading, error, fetchRepository } = useRepositories();
+
+    useEffect(() => {
+        if (singleView) { // Only fetch repository if singleView is true
+            const fetch = async () => {
+                const data = await fetchRepository(id);
+                setRepository(data);
+            };
+            fetch();
+        }
+    }, [id, singleView]);
+
     if(loading) {
         return <View><Text>Loading...</Text></View>
     }
@@ -28,8 +35,7 @@ const RepositoryItem = ({ singleView, ...props }) => {
         return <View><Text>Error</Text></View>
     }
 
-    const repositoryData = singleView ? data?.repository : props;
-    console.log("Repository data:", repositoryData);
+    const repositoryData = singleView ? repository : props;
 
     if (repositoryData !== undefined && repositoryData !== null)
     return(
