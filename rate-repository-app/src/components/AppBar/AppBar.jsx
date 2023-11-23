@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
 const AppBar = () => {
     const { data } = useQuery(GET_USER);
     const [signOut] = useUser();
-    console.log("data: ", data);
     const handleSignOut = async () => {
         console.log("Sign Out");
         await signOut();

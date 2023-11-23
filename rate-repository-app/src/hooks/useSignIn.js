@@ -12,7 +12,6 @@ const useSignIn = () => {
         console.log('signIn function called'); // <-- First log
         try {
             const response = await mutate({variables: {username, password}});
-            console.log('response', response); // <-- Second log
 
             const accessToken = response.data.authenticate.accessToken;
             console.log('accessToken', accessToken); // <-- Third log
