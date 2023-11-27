@@ -5,6 +5,8 @@ import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import useSignIn from "../hooks/useSignIn";
 import RepositoryItemWithReviews from "./RepoItem/RepositoryItemWithReviews";
+import Review from "./RepoItem/ReviewForm";
+import useCreateReview from "../hooks/useCreateReview";
 
 const styles = StyleSheet.create({
     main: {
@@ -15,8 +17,10 @@ const styles = StyleSheet.create({
 });
 const Main = () => {
     const [signIn] = useSignIn();
+    const [createReview] = useCreateReview();
+
     const navigate = useNavigate();
-    const onSubmit = async (values, formikHelpers) => {
+    const onSubmitSignIn = async (values, formikHelpers) => {
         console.log(values);
         const { username, password } = values;
         try {
@@ -29,12 +33,27 @@ const Main = () => {
         }
         formikHelpers.resetForm();
     };
+    const onSubmitReview = async (values, formikHelpers) => {
+        console.log(values);
+        const { ownerName, repoName, rating, reviewText } = values;
+        try {
+            const {data} = await createReview({ ownerName, repoName, rating, reviewText });
+            if(data && data.authenticate) {
+                navigate("/");
+            }
+        } catch (e) {
+            console.log("Error:", e);
+        }
+        formikHelpers.resetForm();
+    };
+
     return (
         <View style={styles.main}>
             <AppBar />
             <Routes>
                 <Route path="/" element={<RepositoryList />} />
-                <Route path="/signin" element={<SignIn onSubmit={onSubmit} />} />
+                <Route path="/signin" element={<SignIn onSubmit={onSubmitSignIn} />} />
+                <Route path="/createReview" element={<Review onSubmit={onSubmitReview} />} />
                 <Route path="/:id" element={<RepositoryItemWithReviews />} />
                 <Route path={"*"} element={<Navigate to="/" replace />} />
             </Routes>

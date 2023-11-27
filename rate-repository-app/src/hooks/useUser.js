@@ -10,7 +10,7 @@ const useUser = () => {
             await authStorage.removeAccessToken();
             await client.resetStore();
         } catch (error) {
-            console.error('Error in SignOut function', error); // <-- Error log
+            console.error('Error in SignOut function', error);
         }
     };
 

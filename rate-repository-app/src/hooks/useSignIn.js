@@ -9,22 +9,22 @@ const useSignIn = () => {
     const [mutate, result] = useMutation(AUTHENTICATE);
 
     const signIn = async ({ username, password }) => {
-        console.log('signIn function called'); // <-- First log
+        console.log('signIn function called');
         try {
             const response = await mutate({variables: {username, password}});
 
             const accessToken = response.data.authenticate.accessToken;
-            console.log('accessToken', accessToken); // <-- Third log
+            console.log('accessToken', accessToken);
             await authStorage.setAccessToken(accessToken);
 
-            const retrievedToken = await authStorage.getAccessToken();
-            console.log("Retrieved token:", retrievedToken);
+            //const retrievedToken = await authStorage.getAccessToken();
+            //console.log("Retrieved token:", retrievedToken);
 
             await client.resetStore();
 
             return response;
         } catch (error) {
-            console.error('Error in signIn function', error); // <-- Error log
+            console.error('Error in signIn function', error);
         }
     };
 

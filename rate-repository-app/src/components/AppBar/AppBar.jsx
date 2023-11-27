@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
     const { data } = useQuery(GET_USER);
     const [signOut] = useUser();
+    console.log("user data", data);
     const handleSignOut = async () => {
         console.log("Sign Out");
         await signOut();
@@ -30,8 +31,13 @@ const AppBar = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                 <AppBarTab style={styles.tab} content={"Repositories"}></AppBarTab>
                 { data === undefined || data.me === null || data.me === undefined
-                ? <AppBarTab content={"SignIn"}></AppBarTab>
-                : <AppBarTab content={`Sign out ${data.me.username}`} onPress={handleSignOut}></AppBarTab> }
+                    ? <AppBarTab content={"SignIn"}></AppBarTab>
+                    : <AppBarTab content={`Sign out ${data.me.username}`} onPress={handleSignOut}></AppBarTab>
+                }
+                { data === undefined || data.me === null || data.me === undefined
+                    ? undefined
+                    : <AppBarTab content={"Create Review"} to={"/createReview"}></AppBarTab>
+                }
             </ScrollView>
         </View>
     );

@@ -1,7 +1,7 @@
 import {Button, Linking, Text, StyleSheet, View} from "react-native";
 import RepositoryHeader from "./RepositoryHeader";
 import RepositoryHeaderDetails from "./RepositoryHeaderDetails";
-import {useParams} from "react-router-native";
+import {useParams, useNavigate} from "react-router-native";
 import useRepositories from "../../hooks/useRepositories";
 import {useEffect, useState} from "react";
 
@@ -11,9 +11,14 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         backgroundColor: "#ffffff",
     },
+    button: {
+        margin: 5,
+        backgroundColor: "red",
+    }
 });
 const RepositoryItem = ({ singleView, ...props }) => {
     const { id } = singleView ? useParams() : props;
+    const navigate = useNavigate();
     const [repository, setRepository] = useState(null);
     const { loading, error, fetchRepository } = useRepositories();
 
@@ -37,12 +42,18 @@ const RepositoryItem = ({ singleView, ...props }) => {
 
     const repositoryData = singleView ? repository : props;
 
+    const handlePress = (id) => () => {
+        console.log(id);
+        navigate(`/${id}`);
+    }
+
     if (repositoryData !== undefined && repositoryData !== null)
     return(
         <View testID="repositoryItem" style={styles.repoItem}>
             <RepositoryHeader avatarUrl={repositoryData.ownerAvatarUrl} fullName={repositoryData.fullName} language={repositoryData.language} description={repositoryData.description} />
             <RepositoryHeaderDetails forksCount={repositoryData.forksCount} stargazersCount={repositoryData.stargazersCount} ratingAverage={repositoryData.ratingAverage} reviewCount={repositoryData.reviewCount} />
-            {singleView && <Button title="Open in GitHub" onPress={() => Linking.openURL(repositoryData.url)} />}
+            {singleView && <View style={styles.button}><Button title="Open in GitHub" onPress={() => Linking.openURL(repositoryData.url)} /></View>}
+            {singleView && <View style={styles.button}><Button title="Create a review" onPress={handlePress(id)} /></View>}
         </View>
         )
     else return <View><Text>Repository data not found</Text></View>
