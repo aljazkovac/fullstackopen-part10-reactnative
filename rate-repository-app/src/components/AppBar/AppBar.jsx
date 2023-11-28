@@ -4,6 +4,7 @@ import AppBarTab from "./AppBarTab";
 import {useQuery} from "@apollo/client";
 import {GET_USER} from "../../graphql/queries";
 import useUser from "../../hooks/useUser";
+import {useNavigate} from "react-router-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -21,22 +22,29 @@ const styles = StyleSheet.create({
 const AppBar = () => {
     const { data } = useQuery(GET_USER);
     const [signOut] = useUser();
+    const navigate= useNavigate();
+
     console.log("user data", data);
     const handleSignOut = async () => {
         console.log("Sign Out");
         await signOut();
+    }
+    const handleCreateReview = async () => {
+        console.log("Create review");
+        navigate("/createReview");
+
     }
     return (
         <View style={styles.container}>
             <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                 <AppBarTab style={styles.tab} content={"Repositories"}></AppBarTab>
                 { data === undefined || data.me === null || data.me === undefined
-                    ? <AppBarTab content={"SignIn"}></AppBarTab>
-                    : <AppBarTab content={`Sign out ${data.me.username}`} onPress={handleSignOut}></AppBarTab>
+                    ? undefined
+                    : <AppBarTab style={styles.tab} content={"Create Review"} onPress={handleCreateReview}></AppBarTab>
                 }
                 { data === undefined || data.me === null || data.me === undefined
-                    ? undefined
-                    : <AppBarTab content={"Create Review"} to={"/createReview"}></AppBarTab>
+                    ? <AppBarTab style={styles.tab} content={"SignIn"}></AppBarTab>
+                    : <AppBarTab style={styles.tab} content={`Sign out ${data.me.username}`} onPress={handleSignOut}></AppBarTab>
                 }
             </ScrollView>
         </View>

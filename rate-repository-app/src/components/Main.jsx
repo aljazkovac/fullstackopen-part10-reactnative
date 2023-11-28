@@ -1,4 +1,4 @@
-import { StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Route, Routes, Navigate, useNavigate} from "react-router-native";
 import AppBar from "./AppBar/AppBar";
 import RepositoryList from "./RepositoryList";
@@ -22,10 +22,10 @@ const Main = () => {
     const navigate = useNavigate();
     const onSubmitSignIn = async (values, formikHelpers) => {
         console.log(values);
-        const { username, password } = values;
+        const {username, password} = values;
         try {
             const {data} = await signIn({username, password});
-            if(data && data.authenticate) {
+            if (data && data.authenticate) {
                 navigate("/");
             }
         } catch (e) {
@@ -35,10 +35,10 @@ const Main = () => {
     };
     const onSubmitReview = async (values, formikHelpers) => {
         console.log(values);
-        const { ownerName, repoName, rating, reviewText } = values;
+        const {ownerName, repoName, rating, reviewText} = values;
         try {
-            const {data} = await createReview({ ownerName, repoName, rating, reviewText });
-            if(data && data.authenticate) {
+            const {data} = await createReview({ownerName, repoName, rating, reviewText});
+            if (data && data.authenticate) {
                 navigate("/");
             }
         } catch (e) {
@@ -49,13 +49,13 @@ const Main = () => {
 
     return (
         <View style={styles.main}>
-            <AppBar />
+            <AppBar/>
             <Routes>
-                <Route path="/" element={<RepositoryList />} />
-                <Route path="/signin" element={<SignIn onSubmit={onSubmitSignIn} />} />
-                <Route path="/createReview" element={<Review onSubmit={onSubmitReview} />} />
-                <Route path="/:id" element={<RepositoryItemWithReviews />} />
-                <Route path={"*"} element={<Navigate to="/" replace />} />
+                <Route path="/" element={<RepositoryList/>}/>
+                <Route path="/signin" element={<SignIn onSubmit={onSubmitSignIn}/>}/>
+                <Route path="/createReview" element={<Review onSubmit={onSubmitReview}/>}/>
+                <Route path="/:id" element={<RepositoryItemWithReviews/>}/>
+                <Route path={"*"} element={<Navigate to="/" replace/>}/>
             </Routes>
         </View>
     );
