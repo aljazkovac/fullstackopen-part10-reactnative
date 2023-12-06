@@ -4,6 +4,7 @@
  * The Formik component takes an onSubmit prop that is used to define the function that is called when the form is submitted.
 ***/
 
+import React, { useState, useEffect } from 'react';
 import { View, Pressable, StyleSheet } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -36,6 +37,15 @@ const styles = StyleSheet.create({
     submitText: {
         color: "white",
         textAlign: "center",
+    },
+    errorText: {
+        margin: 5,
+        padding: 10,
+        color: "#d73a4a",
+        textAlign: "center",
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: "#d73a4a",
     }
 });
 
@@ -56,20 +66,37 @@ const validationSchema = yup.object().shape({
         .notRequired()
 });
 
-const ReviewForm = ({handleSubmit, errors}) => {
+const ReviewForm = ({ handleSubmit, errors, error, resetError }) => {
     const ownerNameError = errors.ownerName;
     const repoNameError = errors.repoName;
     const ratingError = errors.rating;
+    console.log("errors", errors)
+
+    const [displayedError, setDisplayedError] = useState('');
+
+    useEffect(() => {
+        if (error) {
+            setDisplayedError(error.message);
+            const timer = setTimeout(() => setDisplayedError(''), 5000);
+            return () => {
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                resetError();
+            };
+        }
+    }, [error, resetError]);
 
     return (
         <View style={styles.form}>
-            <FormikTextInput testID="ownerNameField" name="owner name" placeholder="owner name"
+            {displayedError && <Text style={styles.errorText}>{displayedError}</Text>}
+            <FormikTextInput testID="ownerNameField" name="ownerName" placeholder="owner name"
                              style={ownerNameError ? styles.inputFieldError : styles.inputField} />
-            <FormikTextInput testID="repoNameField" name="repo name" placeholder="repo name"
+            <FormikTextInput testID="repoNameField" name="repoName" placeholder="repo name"
                              style={repoNameError ? styles.inputFieldError : styles.inputField} />
             <FormikTextInput testID="rating" name="rating" placeholder="rating"
                              style={ratingError ? styles.inputFieldError : styles.inputField} />
-            <FormikTextInput testID="reviewTextField" name="review text" placeholder="review text" multiline
+            <FormikTextInput testID="reviewTextField" name="reviewText" placeholder="review text" multiline
                              style={styles.inputField} />
             <Pressable testID="submitButton" onPress={handleSubmit} style={({pressed}) => [
                 {
@@ -84,7 +111,7 @@ const ReviewForm = ({handleSubmit, errors}) => {
     );
 };
 
-const Review = ({ onSubmit }) => {
+const Review = ({ onSubmit, error, resetError }) => {
     return (
         <Formik
             initialValues={{
@@ -96,7 +123,7 @@ const Review = ({ onSubmit }) => {
             onSubmit={onSubmit}
             validationSchema={validationSchema}
         >
-            {formikProps => <ReviewForm {...formikProps} />}
+            {formikProps => <ReviewForm {...formikProps} error={error} resetError={resetError} />}
         </Formik>
     );
 }

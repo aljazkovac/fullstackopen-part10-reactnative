@@ -6,14 +6,26 @@ const useCreateReview = () => {
 
     const createReview = async ({ ownerName, repoName, rating, reviewText }) => {
         console.log('createReview function called');
+
+        const review = {
+            ownerName,
+            repositoryName: repoName,
+            rating: parseInt(rating),
+            text: reviewText
+        };
+
         try {
-            return await mutate({variables: {ownerName, repoName, rating, reviewText}});
+            return await mutate({variables: { review }});
         } catch (error) {
             console.error('Error in createReview function', error);
         }
     };
 
-    return [createReview, result];
+    const resetError = () => {
+        result.error = null;
+    };
+
+    return [createReview, result, resetError];
 };
 
 export default useCreateReview;
