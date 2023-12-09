@@ -44,7 +44,11 @@ const AppBar = () => {
                 }
                 { data === undefined || data.me === null || data.me === undefined
                     ? <AppBarTab style={styles.tab} content={"SignIn"}></AppBarTab>
-                    : <AppBarTab style={styles.tab} content={`Sign out ${data.me.username}`} onPress={handleSignOut}></AppBarTab>
+                    : <AppBarTab style={styles.tab} content={`SignOut ${data.me.username}`} onPress={handleSignOut}></AppBarTab>
+                }
+                { data === undefined || data.me === null || data.me === undefined
+                    ? <AppBarTab style={styles.tab} content={`SignUp`}></AppBarTab>
+                    : undefined
                 }
             </ScrollView>
         </View>
