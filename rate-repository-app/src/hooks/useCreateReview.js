@@ -21,11 +21,7 @@ const useCreateReview = () => {
         }
     };
 
-    const resetError = () => {
-        result.error = null;
-    };
-
-    return [createReview, result, resetError];
+    return [createReview, result];
 };
 
 export default useCreateReview;

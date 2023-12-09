@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
 });
 const Main = () => {
     const [signIn] = useSignIn();
-    const [createReview, { error }, resetError] = useCreateReview();
+    const [createReview, result] = useCreateReview();
+    //const [fetchRepository] = useRepositories();
 
     const navigate = useNavigate();
     const onSubmitSignIn = async (values, formikHelpers) => {
@@ -39,8 +40,9 @@ const Main = () => {
         try {
             const {data} = await createReview({ownerName, repoName, rating, reviewText});
             console.log("data", data)
-            if (data && data.authenticate) {
-                handleNavigateAway();
+            if (data && data.createReview) {
+                const repositoryId = data.createReview.repositoryId;
+                handleNavigateAway(repositoryId);
             }
         } catch (e) {
             console.log("Error:", e);
@@ -48,9 +50,10 @@ const Main = () => {
         formikHelpers.resetForm();
     };
 
-    const handleNavigateAway = () => {
-         resetError();
-        navigate("/:id");
+    const handleNavigateAway = (repositoryId) => {
+        console.log("handleNavigateAway called")
+        console.log("repositoryId", repositoryId)
+        navigate(`/${repositoryId}`);
     };
 
     return (
@@ -59,7 +62,7 @@ const Main = () => {
             <Routes>
                 <Route path="/" element={<RepositoryList/>}/>
                 <Route path="/signin" element={<SignIn onSubmit={onSubmitSignIn}/>}/>
-                <Route path="/createReview" element={<Review onSubmit={onSubmitReview} error={error} resetError={resetError}/>}/>
+                <Route path="/createReview" element={<Review onSubmit={onSubmitReview} error={result.error} reset={result.reset}/>}/>
                 <Route path="/:id" element={<RepositoryItemWithReviews/>}/>
                 <Route path={"*"} element={<Navigate to="/" replace/>}/>
             </Routes>

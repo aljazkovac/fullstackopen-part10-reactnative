@@ -66,7 +66,7 @@ const validationSchema = yup.object().shape({
         .notRequired()
 });
 
-const ReviewForm = ({ handleSubmit, errors, error, resetError }) => {
+const ReviewForm = ({ handleSubmit, errors, error, reset }) => {
     const ownerNameError = errors.ownerName;
     const repoNameError = errors.repoName;
     const ratingError = errors.rating;
@@ -81,11 +81,11 @@ const ReviewForm = ({ handleSubmit, errors, error, resetError }) => {
             return () => {
                 if (timer) {
                     clearTimeout(timer);
+                    reset();
                 }
-                resetError();
             };
         }
-    }, [error, resetError]);
+    }, [error]);
 
     return (
         <View style={styles.form}>
@@ -111,7 +111,7 @@ const ReviewForm = ({ handleSubmit, errors, error, resetError }) => {
     );
 };
 
-const Review = ({ onSubmit, error, resetError }) => {
+const Review = ({ onSubmit, error, reset }) => {
     return (
         <Formik
             initialValues={{
@@ -123,7 +123,7 @@ const Review = ({ onSubmit, error, resetError }) => {
             onSubmit={onSubmit}
             validationSchema={validationSchema}
         >
-            {formikProps => <ReviewForm {...formikProps} error={error} resetError={resetError} />}
+            {formikProps => <ReviewForm {...formikProps} error={error} reset={reset} />}
         </Formik>
     );
 }

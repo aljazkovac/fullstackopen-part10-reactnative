@@ -7,9 +7,9 @@ const useRepositories = () => {
             const { data } = await client.query({
                 query: GET_REPOSITORY,
                 variables: { id },
-                fetchPolicy: 'network-only', // You might want to use 'network-only' to always fetch the latest data
+                fetchPolicy: 'network-only',
             });
-            return data.repository; // Or however the data is structured
+            return data.repository;
         } catch (e) {
             console.error('Error fetching single repository:', e);
             return null;
@@ -21,9 +21,9 @@ const useRepositories = () => {
             const { data } = await client.query({
                 query: GET_REVIEWS,
                 variables: { id },
-                fetchPolicy: 'network-only', // You might want to use 'network-only' to always fetch the latest data
+                fetchPolicy: 'network-only',
             });
-            return data.repository.reviews; // Or however the data is structured
+            return data.repository.reviews;
         } catch (e) {
             console.error('Error fetching reviews:', e);
             return null;
@@ -39,7 +39,6 @@ const useRepositories = () => {
         console.error('Error fetching repositories:', error);
     }
 
-    // Return the repositories from data or an empty object as a fallback.
     const repositories = data ? data.repositories : {};
 
     return { repositories, loading, error, refetch, fetchRepository, fetchReviews };
