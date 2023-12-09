@@ -8,6 +8,7 @@ import RepositoryItemWithReviews from "./RepoItem/RepositoryItemWithReviews";
 import Review from "./RepoItem/ReviewForm";
 import useCreateReview from "../hooks/useCreateReview";
 import SignUp from "./SignUp";
+import useSignUp from "../hooks/useSignUp";
 
 const styles = StyleSheet.create({
     main: {
@@ -18,8 +19,8 @@ const styles = StyleSheet.create({
 });
 const Main = () => {
     const [signIn] = useSignIn();
+    const [signUp] = useSignUp();
     const [createReview, result] = useCreateReview();
-    //const [fetchRepository] = useRepositories();
 
     const navigate = useNavigate();
     const onSubmitSignIn = async (values, formikHelpers) => {
@@ -29,6 +30,24 @@ const Main = () => {
             const {data} = await signIn({username, password});
             if (data && data.authenticate) {
                 navigate("/");
+            }
+        } catch (e) {
+            console.log("Error:", e);
+        }
+        formikHelpers.resetForm();
+    };
+    const onSubmitSignUp = async (values, formikHelpers) => {
+        console.log(values);
+        const {username, password, passwordConfirmation} = values;
+        try {
+            const resultSignUp = await signUp({username, password, passwordConfirmation});
+            console.log("signUp data", resultSignUp.data)
+            if (resultSignUp.data && resultSignUp.data.createUser) {
+                const resultSignIn = await signIn({username, password});
+                console.log("signIn data", resultSignIn.data)
+                if (resultSignIn.data && resultSignIn.data.authenticate) {
+                    navigate("/");
+                }
             }
         } catch (e) {
             console.log("Error:", e);
@@ -63,7 +82,7 @@ const Main = () => {
             <Routes>
                 <Route path="/" element={<RepositoryList/>}/>
                 <Route path="/signin" element={<SignIn onSubmit={onSubmitSignIn}/>}/>
-                <Route path="/signup" element={<SignUp onSubmit={onSubmitSignIn}/>}/>
+                <Route path="/signup" element={<SignUp onSubmit={onSubmitSignUp}/>}/>
                 <Route path="/createReview" element={<Review onSubmit={onSubmitReview} error={result.error} reset={result.reset}/>}/>
                 <Route path="/:id" element={<RepositoryItemWithReviews/>}/>
                 <Route path={"*"} element={<Navigate to="/" replace/>}/>
