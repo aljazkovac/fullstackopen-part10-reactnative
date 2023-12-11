@@ -1,7 +1,7 @@
 import { useQuery, useApolloClient } from '@apollo/client';
 import {GET_REPOSITORIES, GET_REPOSITORY, GET_REVIEWS} from '../graphql/queries';
 
-const useRepositories = () => {
+const useRepositories = (orderBy, orderDirection) => {
     const fetchRepository = async (id) => {
         try {
             const { data } = await client.query({
@@ -30,7 +30,9 @@ const useRepositories = () => {
         }
     }
 
+
     const { data, loading, error, refetch } = useQuery(GET_REPOSITORIES, {
+        variables: { orderBy, orderDirection },
         fetchPolicy: 'cache-and-network',
     });
     const client = useApolloClient();

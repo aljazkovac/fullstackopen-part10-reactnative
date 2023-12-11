@@ -2,22 +2,28 @@ import { SelectList } from 'react-native-dropdown-select-list'
 import * as React from 'react';
 import { useState } from 'react';
 
-const SelectFilter = () => {
+const SelectFilter = ({ setSelectedFilter }) => {
 
     const [selected, setSelected] = useState("");
 
     const data = [
-        {key:'1', value:'Mobiles'},
-        {key:'2', value:'Appliances'},
-        {key:'3', value:'Cameras'},
+        {key:'1', value:'Latest repositories'},
+        {key:'2', value:'Highest rated repositories'},
+        {key:'3', value:'Lowest rated repositories'},
     ]
+
+    const handleSelect = (val) => {
+        setSelected(val);
+        setSelectedFilter(val);
+    }
 
     return(
         <SelectList
             placeholder={'Filter repositories'}
-            setSelected={(val) => setSelected(val)}
+            setSelected={handleSelect}
             data={data}
             save="value"
+            boxStyles={{borderRadius:0}}
         />
     )
 };
