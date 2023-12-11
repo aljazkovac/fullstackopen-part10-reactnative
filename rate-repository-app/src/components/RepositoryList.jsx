@@ -2,6 +2,7 @@ import {FlatList, Pressable, StyleSheet, View} from 'react-native';
 import RepositoryItem from "./RepoItem/RepositoryItem";
 import useRepositories from '../hooks/useRepositories';
 import {useNavigate} from "react-router-native";
+import SelectFilter from "./SelectFilter";
 
 const styles = StyleSheet.create({
     separator: {
@@ -23,17 +24,22 @@ export const RepositoryListContainer = ({ repositories }) => {
     }
 
     return (
-        <FlatList
-            data={repositoryNodes}
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item }) => <Pressable onPress={handlePress(item.id)}><RepositoryItem { ...item } singleView={false} /></Pressable> }
-        />
+        <View>
+            <FlatList
+                data={repositoryNodes}
+                ItemSeparatorComponent={ItemSeparator}
+                renderItem={({ item }) => <Pressable onPress={handlePress(item.id)}><RepositoryItem { ...item } singleView={false} /></Pressable> }
+                ListHeaderComponent={<SelectFilter />}
+            />
+        </View>
     );
 }
 const RepositoryList = () => {
     const { repositories } = useRepositories();
 
-    return <RepositoryListContainer repositories={repositories} />;
+    return (
+        <RepositoryListContainer repositories={repositories} />
+    );
 };
 
 export default RepositoryList;
