@@ -1,10 +1,17 @@
 import { SelectList } from 'react-native-dropdown-select-list'
+import {Searchbar} from 'react-native-paper';
 import * as React from 'react';
 import { useState } from 'react';
+import {View} from "react-native";
+import {useDebounce} from "use-debounce";
 
 const SelectFilter = ({ setSelectedFilter }) => {
 
     const [selected, setSelected] = useState("");
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+
+    const onChangeSearch = query => setSearchQuery(query);
 
     const data = [
         {key:'1', value:'Latest repositories'},
@@ -18,13 +25,20 @@ const SelectFilter = ({ setSelectedFilter }) => {
     }
 
     return(
-        <SelectList
-            placeholder={'Filter repositories'}
-            setSelected={handleSelect}
-            data={data}
-            save="value"
-            boxStyles={{borderRadius:0}}
-        />
+        <View>
+            <Searchbar
+                placeholder="Search"
+                onChangeText={onChangeSearch}
+                value={debouncedSearchQuery}
+            />
+            <SelectList
+                placeholder={'Filter repositories'}
+                setSelected={handleSelect}
+                data={data}
+                save="value"
+                boxStyles={{borderRadius:0}}
+            />
+        </View>
     )
 };
 
