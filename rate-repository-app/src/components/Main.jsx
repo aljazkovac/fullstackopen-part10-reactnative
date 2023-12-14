@@ -9,6 +9,7 @@ import Review from "./RepoItem/ReviewForm";
 import useCreateReview from "../hooks/useCreateReview";
 import SignUp from "./SignUp";
 import useSignUp from "../hooks/useSignUp";
+import MyReviews from "./MyReviews";
 
 const styles = StyleSheet.create({
     main: {
@@ -84,6 +85,7 @@ const Main = () => {
                 <Route path="/signin" element={<SignIn onSubmit={onSubmitSignIn}/>}/>
                 <Route path="/signup" element={<SignUp onSubmit={onSubmitSignUp}/>}/>
                 <Route path="/createReview" element={<Review onSubmit={onSubmitReview} error={result.error} reset={result.reset}/>}/>
+                <Route path="/myReviews" element={<MyReviews />}/>
                 <Route path="/:id" element={<RepositoryItemWithReviews/>}/>
                 <Route path={"*"} element={<Navigate to="/" replace/>}/>
             </Routes>

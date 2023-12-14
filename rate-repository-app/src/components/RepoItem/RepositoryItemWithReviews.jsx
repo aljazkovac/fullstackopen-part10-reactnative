@@ -28,7 +28,6 @@ const RepositoryItemWithReviews = () => {
             renderItem={({ item }) => <ReviewItem review={item} />}
             keyExtractor={(item) => item.id} // Make sure 'item' is not destructured since it's a single item from 'reviews'
             ListHeaderComponent={<RepositoryItem singleView={true} />}
-            // ...
         />
     );
 }

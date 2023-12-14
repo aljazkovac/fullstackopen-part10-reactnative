@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-    const { data } = useQuery(GET_USER);
+    const { data } = useQuery(GET_USER, { variables: { includeReviews: true } });
     const [signOut] = useUser();
     const navigate= useNavigate();
 
@@ -32,12 +32,21 @@ const AppBar = () => {
     const handleCreateReview = async () => {
         console.log("Create review");
         navigate("/createReview");
-
     }
+
+    const handleMyReviews = async () => {
+        console.log("My reviews");
+        navigate("/myReviews");
+    }
+
     return (
         <View style={styles.container}>
             <ScrollView horizontal showsHorizontalScrollIndicator={true}>
                 <AppBarTab style={styles.tab} content={"Repositories"}></AppBarTab>
+                { data === undefined || data.me === null || data.me === undefined
+                    ? undefined
+                    : <AppBarTab style={styles.tab} content={"My Reviews"} onPress={handleMyReviews}></AppBarTab>
+                }
                 { data === undefined || data.me === null || data.me === undefined
                     ? undefined
                     : <AppBarTab style={styles.tab} content={"Create Review"} onPress={handleCreateReview}></AppBarTab>
