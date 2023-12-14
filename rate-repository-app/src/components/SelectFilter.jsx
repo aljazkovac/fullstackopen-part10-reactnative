@@ -29,7 +29,7 @@ const SelectFilter = ({ setSelectedFilter }) => {
             <Searchbar
                 placeholder="Search"
                 onChangeText={onChangeSearch}
-                value={debouncedSearchQuery}
+                value={searchQuery}
             />
             <SelectList
                 placeholder={'Filter repositories'}
