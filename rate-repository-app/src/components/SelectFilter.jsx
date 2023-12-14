@@ -1,15 +1,9 @@
 import { SelectList } from 'react-native-dropdown-select-list'
 import {Searchbar} from 'react-native-paper';
 import * as React from 'react';
-import { useState } from 'react';
 import {View} from "react-native";
-import {useDebounce} from "use-debounce";
 
-const SelectFilter = ({ setSelectedFilter }) => {
-
-    const [selected, setSelected] = useState("");
-    const [searchQuery, setSearchQuery] = React.useState('');
-    const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
+const SelectFilter = ({ setSelectedFilter, setSearchQuery, searchQuery }) => {
 
     const onChangeSearch = query => setSearchQuery(query);
 
@@ -20,7 +14,6 @@ const SelectFilter = ({ setSelectedFilter }) => {
     ]
 
     const handleSelect = (val) => {
-        setSelected(val);
         setSelectedFilter(val);
     }
 
