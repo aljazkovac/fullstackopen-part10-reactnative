@@ -1,17 +1,16 @@
 import {FlatList} from "react-native";
-import ReviewItem from "./../components/RepoItem/ReviewItem";
 import {useEffect, useState} from "react";
 import {useQuery} from "@apollo/client";
-import {GET_USER} from "../graphql/queries";
+import {GET_USER} from "../../graphql/queries";
+import MyReviewItem from "./MyReviewItem";
 
 const MyReviews = () => {
 
     const [myReviews, setMyReviews] = useState([]);
 
     const { data } = useQuery(GET_USER, {
-        variables: { includeReviews: true}
+        variables: { includeReviews: true, fetchPolicy: 'network-only' }
     });
-
 
     useEffect(() => {
         if (data?.me?.reviews)
@@ -25,7 +24,7 @@ const MyReviews = () => {
     return (
         <FlatList
             data={myReviews}
-            renderItem={({ item }) => <ReviewItem review={item} />}
+            renderItem={({ item }) => <MyReviewItem myReview={item} />}
             keyExtractor={(item) => item.id} // Make sure 'item' is not destructured since it's a single item from 'reviews'
         />
     );

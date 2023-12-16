@@ -9,7 +9,7 @@ import Review from "./RepoItem/ReviewForm";
 import useCreateReview from "../hooks/useCreateReview";
 import SignUp from "./SignUp";
 import useSignUp from "../hooks/useSignUp";
-import MyReviews from "./MyReviews";
+import MyReviews from "./MyReviews/MyReviews";
 
 const styles = StyleSheet.create({
     main: {
