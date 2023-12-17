@@ -5,7 +5,7 @@ import {GET_USER} from "../graphql/queries";
 const useCreateReview = () => {
     const [mutate, result] = useMutation(CREATE_REVIEW);
 
-    const createReview = async ({ ownerName, repoName, rating, reviewText }) => {
+    const createReview = async ({ownerName, repoName, rating, reviewText}) => {
         console.log('createReview function called');
 
         const review = {
@@ -17,9 +17,10 @@ const useCreateReview = () => {
 
         try {
             return await mutate({
-                variables: { review },
-                refetchQueries: [{ query: GET_USER, variables: { includeReviews: true } }]
-        })} catch (error) {
+                variables: {review},
+                refetchQueries: [{query: GET_USER, variables: {includeReviews: true}}]
+            })
+        } catch (error) {
             console.error('Error in createReview function', error);
         }
     };
