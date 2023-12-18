@@ -1,7 +1,7 @@
 import { useQuery, useApolloClient } from '@apollo/client';
 import {GET_REPOSITORIES, GET_REPOSITORY, GET_REVIEWS} from '../graphql/queries';
 
-const useRepositories = (orderBy, orderDirection, searchQuery) => {
+const useRepositories = (orderBy, orderDirection, searchQuery, first, after) => {
     const fetchRepository = async (id) => {
         try {
             const { data } = await client.query({
@@ -30,9 +30,8 @@ const useRepositories = (orderBy, orderDirection, searchQuery) => {
         }
     }
 
-
-    const { data, loading, error, refetch } = useQuery(GET_REPOSITORIES, {
-        variables: { orderBy, orderDirection, searchQuery },
+    const { data, loading, error, refetch, fetchMore } = useQuery(GET_REPOSITORIES, {
+        variables: { orderBy, orderDirection, searchQuery, first, after },
         fetchPolicy: 'cache-and-network',
     });
     const client = useApolloClient();
@@ -43,7 +42,31 @@ const useRepositories = (orderBy, orderDirection, searchQuery) => {
 
     const repositories = data ? data.repositories : {};
 
-    return { repositories, loading, error, refetch, fetchRepository, fetchReviews };
+    const handleFetchMore = () => {
+        const canFetchMore =
+            !loading && data && data.repositories.pageInfo.hasNextPage;
+        console.log('loading', loading)
+        console.log('data', data)
+        console.log('data.repositories.pageInfo.hasNextPage', data.repositories.pageInfo.hasNextPage)
+        console.log('canFetchMore', canFetchMore)
+
+        if (!canFetchMore) {
+            return;
+        }
+
+        fetchMore({
+            query: GET_REPOSITORIES,
+            variables: {
+                orderBy,
+                orderDirection,
+                searchQuery,
+                first,
+                after: data.repositories.pageInfo.endCursor
+            },
+        });
+    }
+
+    return { repositories, loading, error, refetch, fetchRepository, fetchReviews, fetchMore: handleFetchMore };
 };
 
 export default useRepositories;

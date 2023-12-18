@@ -28,7 +28,7 @@ const interpretFilter = (filter, searchKeyword) => {
     }
 }
 
-export const RepositoryListContainer = ({ repositories, setSelectedFilter, setSearchQuery, searchQuery }) => {
+export const RepositoryListContainer = ({ repositories, setSelectedFilter, setSearchQuery, searchQuery, onEndReach }) => {
     const repositoryNodes = repositories && repositories.edges
         ? repositories.edges.map(edge => edge.node)
         : [];
@@ -46,6 +46,8 @@ export const RepositoryListContainer = ({ repositories, setSelectedFilter, setSe
                 ItemSeparatorComponent={ItemSeparator}
                 renderItem={({ item }) => <Pressable onPress={handlePress(item.id)}><RepositoryItem { ...item } singleView={false} /></Pressable> }
                 ListHeaderComponent={<SelectFilter setSelectedFilter={setSelectedFilter} setSearchQuery={setSearchQuery} searchQuery={searchQuery}/>}
+                onEndReached={onEndReach}
+                onEndReachedThreshold={0.5}
             />
         </View>
     );
@@ -54,7 +56,7 @@ const RepositoryList = () => {
     const [selectedFilter, setSelectedFilter] = useState("");
     const [searchQuery, setSearchQuery] = React.useState('');
     const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
-    const { repositories, refetch } = useRepositories();
+    const { repositories, refetch, fetchMore } = useRepositories("CREATED_AT", "DESC", debouncedSearchQuery, 3, "");
 
     console.log("selectedFilter: ", selectedFilter)
 
@@ -63,12 +65,18 @@ const RepositoryList = () => {
         refetch(interpretFilter(selectedFilter, debouncedSearchQuery));
     } ,[selectedFilter, debouncedSearchQuery, refetch]);
 
+    const onEndReach = () => {
+        console.log('You have reached the end of the list');
+        fetchMore();
+    };
+
     return (
         <RepositoryListContainer
             repositories={repositories}
             setSelectedFilter={setSelectedFilter}
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
+            onEndReach={onEndReach}
         />
     );
 };
