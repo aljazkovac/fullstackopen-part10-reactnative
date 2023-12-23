@@ -1,14 +1,14 @@
 import {FlatList} from "react-native";
 import RepositoryItem from "./RepositoryItem";
-import useRepositories from "../../hooks/useRepositories";
 import ReviewItem from "./ReviewItem";
 import {useParams} from "react-router-native";
 import {useEffect, useState} from "react";
+import useReviews from "../../hooks/useReviews";
 
 const RepositoryItemWithReviews = () => {
     const { id } = useParams();
     const [reviews, setReviews] = useState([]);
-    const { fetchReviews } = useRepositories();
+    const {fetchReviews} = useReviews();
 
     useEffect(() => {
         const fetch = async () => {

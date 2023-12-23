@@ -6,7 +6,7 @@ import SignIn from "./SignIn";
 import useSignIn from "../hooks/useSignIn";
 import RepositoryItemWithReviews from "./RepoItem/RepositoryItemWithReviews";
 import Review from "./RepoItem/ReviewForm";
-import useCreateReview from "../hooks/useCreateReview";
+import useReviews from "../hooks/useReviews";
 import SignUp from "./SignUp";
 import useSignUp from "../hooks/useSignUp";
 import MyReviews from "./MyReviews/MyReviews";
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 const Main = () => {
     const [signIn] = useSignIn();
     const [signUp] = useSignUp();
-    const [createReview, result] = useCreateReview();
+    const {createReview, result} = useReviews();
 
     const navigate = useNavigate();
     const onSubmitSignIn = async (values, formikHelpers) => {
