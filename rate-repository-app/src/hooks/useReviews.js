@@ -1,46 +1,56 @@
-import {useApolloClient, useMutation} from "@apollo/client";
-import {CREATE_REVIEW} from "../graphql/mutations";
-import {GET_REVIEWS, GET_USER} from "../graphql/queries";
+import {useQuery} from "@apollo/client";
+import {GET_REVIEWS} from "../graphql/queries";
 
-const useReviews = () => {
-
-    const client = useApolloClient();
-    const [mutate, result] = useMutation(CREATE_REVIEW);
-    const fetchReviews = async (id) => {
-        try {
-            const { data } = await client.query({
-                query: GET_REVIEWS,
-                variables: { id },
-                fetchPolicy: 'network-only',
-            });
-            return data.repository.reviews;
-        } catch (e) {
-            console.error('Error fetching reviews:', e);
-            return null;
-        }
+const useReviews = (id, first) => {
+    
+    const { data, loading, error, refetch, fetchMore } = useQuery(GET_REVIEWS, {
+        variables: { id, first },
+        fetchPolicy: 'network-only',
+    });
+    
+    if (error) {
+        console.error('Error fetching reviews:', error);
     }
+    
+    const reviews = data ? data.repository.reviews : [];
 
-    const createReview = async ({ownerName, repoName, rating, reviewText}) => {
-        console.log('createReview function called');
-
-        const review = {
-            ownerName,
-            repositoryName: repoName,
-            rating: parseInt(rating),
-            text: reviewText
-        };
-
-        try {
-            return await mutate({
-                variables: {review},
-                refetchQueries: [{query: GET_USER, variables: {includeReviews: true}}]
-            })
-        } catch (error) {
-            console.error('Error in createReview function', error);
+    console.log('reviews', reviews);
+    
+    const handleFetchMore = () => {
+        const canFetchMore =
+            !loading && data && data.repository.reviews.pageInfo.hasNextPage;
+    
+        if (!canFetchMore) {
+            return;
         }
-    };
-
-    return {createReview, fetchReviews, result};
+    
+        fetchMore({
+            query: GET_REVIEWS,
+            variables: {
+                id,
+                first,
+                after: data.repository.reviews.pageInfo.endCursor,
+            },
+            // updateQuery: (previousResult, { fetchMoreResult }) => {
+            //     const nextResult = {
+            //         repository: {
+            //             ...fetchMoreResult.repository,
+            //             reviews: {
+            //                 ...fetchMoreResult.repository.reviews,
+            //                 edges: [
+            //                     ...previousResult.repository.reviews.edges,
+            //                     ...fetchMoreResult.repository.reviews.edges,
+            //                 ],
+            //             },
+            //         },
+            //     };
+            //
+            //     return nextResult;
+            // },
+        });
+    }
+    
+    return { reviews, loading, error, refetch, fetchMore: handleFetchMore };
 };
 
 export default useReviews;
