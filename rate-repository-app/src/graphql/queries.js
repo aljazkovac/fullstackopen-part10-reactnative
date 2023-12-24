@@ -89,6 +89,12 @@ export const GET_REVIEWS = gql`
                             username
                         }
                     }
+                cursor
+                }
+                pageInfo {
+                    endCursor
+                    startCursor
+                    hasNextPage
                 }
             }
         }

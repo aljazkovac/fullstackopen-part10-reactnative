@@ -3,24 +3,33 @@ import RepositoryItem from "./RepositoryItem";
 import ReviewItem from "./ReviewItem";
 import {useParams} from "react-router-native";
 import useReviews from "../../hooks/useReviews";
+import {memo} from "react";
 
 const RepositoryItemWithReviews = () => {
     const { id } = useParams();
-    const { reviews, fetchMore } = useReviews(id, 5);
+    const { reviews, fetchMore, loading } = useReviews(id, 8);
+    const ReviewItemMemo = memo(ReviewItem);
 
     const onEndReach = () => {
         console.log("You have reached the end of the list");
-        fetchMore(); 
+        if(!loading) {
+            console.log("fetching more reviews");
+            fetchMore();
+        }
     }
+    
+    const reviewsNodes = reviews && reviews.edges
+        ? reviews.edges.map(edge => edge.node)
+        : [];
 
     return (
         <FlatList
-            data={reviews}
-            renderItem={({ item }) => <ReviewItem review={item} />}
-            keyExtractor={(item) => item.id} // Make sure 'item' is not destructured since it's a single item from 'reviews'
+            data={reviewsNodes}
+            renderItem={({ item }) => <ReviewItemMemo review={item} />}
+            keyExtractor={ (item) =>  item.id } 
             ListHeaderComponent={<RepositoryItem singleView={true} />}
             onEndReached={onEndReach}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={0.2}
         />
     );
 }

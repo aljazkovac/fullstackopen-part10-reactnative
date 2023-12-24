@@ -15,11 +15,11 @@ let client;
 
 const cache = new InMemoryCache({
   typePolicies: {
-    Query: {
-      fields: {
-        repositories: relayStylePagination(),
+      Repository: {
+          fields: {
+              reviews: relayStylePagination(),
+          },
       },
-    },
   },
 });
 

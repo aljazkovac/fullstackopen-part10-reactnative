@@ -12,9 +12,9 @@ const useReviews = (id, first) => {
         console.error('Error fetching reviews:', error);
     }
     
-    const reviews = data ? data.repository.reviews : [];
+    const reviews = data ? data.repository.reviews : {};
 
-    console.log('reviews', reviews);
+    // console.log('reviews', reviews);
     
     const handleFetchMore = () => {
         const canFetchMore =
@@ -23,6 +23,8 @@ const useReviews = (id, first) => {
         if (!canFetchMore) {
             return;
         }
+
+        console.log('can fetch more reviews');
     
         fetchMore({
             query: GET_REVIEWS,
@@ -31,22 +33,6 @@ const useReviews = (id, first) => {
                 first,
                 after: data.repository.reviews.pageInfo.endCursor,
             },
-            // updateQuery: (previousResult, { fetchMoreResult }) => {
-            //     const nextResult = {
-            //         repository: {
-            //             ...fetchMoreResult.repository,
-            //             reviews: {
-            //                 ...fetchMoreResult.repository.reviews,
-            //                 edges: [
-            //                     ...previousResult.repository.reviews.edges,
-            //                     ...fetchMoreResult.repository.reviews.edges,
-            //                 ],
-            //             },
-            //         },
-            //     };
-            //
-            //     return nextResult;
-            // },
         });
     }
     
