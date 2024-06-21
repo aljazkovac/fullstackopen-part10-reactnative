@@ -5,4 +5,4 @@ For the other parts of this course, please see this repo: [Full Stack Open repo]
 
 Here is the certificate for this part:
 
-[Certificate part 9 - React Native](https://github.com/aljazkovac/fullstackopen-part10-reactnative/blob/main/certificate-fullstack-part10-reactnative.png)
+![Certificate part 9 - React Native](https://github.com/aljazkovac/fullstackopen-part10-reactnative/blob/main/certificate-fullstack-part10-reactnative.png)
